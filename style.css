@@ -1,0 +1,1118 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=League+Spartan:wght@500;600;700;800&display=swap");
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+
+  background: linear-gradient(90deg, rgba(13, 69, 12, 0.92) 0%, rgba(31, 113, 13, 0.75) 50%, rgba(126, 198, 28, 0.35) 100%);
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  margin: 0;
+
+  background: linear-gradient(90deg, rgba(13, 69, 12, 0.92) 0%, rgba(31, 113, 13, 0.75) 50%, rgba(126, 198, 28, 0.35) 100%);
+  color: #171313;
+
+  font-family: "Inter", sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #0d450c;
+}
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+:root {
+  --red: #2b7d0f;
+  --red-dark: #145c12;
+  --red-light: #7ec61c;
+
+  --black: #161313;
+
+  --background: #f5f6f0;
+  --card: #ffffff;
+
+  --text-muted: #687064;
+
+  --border: #d9ded4;
+  --border-focus: #2b7d0f;
+
+  --radius: 18px;
+
+  --shadow: 0 20px 60px rgba(15, 50, 12, 0.08);
+}
+
+/* =========================================
+   APP / VIEWS
+========================================= */
+
+.view {
+  display: none;
+
+  width: 100%;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.view.active {
+  display: flex;
+
+  animation: viewFadeIn 0.65s ease both;
+}
+
+.view.leaving {
+  animation: viewFadeOut 0.4s ease both;
+}
+
+@keyframes viewFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes viewFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero-view {
+  position: relative;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: max(30px, env(safe-area-inset-top)) 22px max(30px, env(safe-area-inset-bottom));
+}
+
+/* =========================================
+   HERO BACKGROUND
+========================================= */
+
+.hero-background {
+  position: absolute;
+
+  inset: 0;
+
+  background-image: url("assets/background.jpg");
+
+  background-position: center;
+  background-size: cover;
+
+  transform: scale(1.03);
+
+  animation: backgroundZoom 8s ease-out forwards;
+}
+
+@keyframes backgroundZoom {
+  from {
+    transform: scale(1.07);
+  }
+
+  to {
+    transform: scale(1.02);
+  }
+}
+
+/* =========================================
+   HERO RED OVERLAY
+========================================= */
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(90deg, rgba(13, 69, 12, 0.58) 0%, rgba(31, 113, 13, 0.38) 52%, rgba(126, 198, 28, 0.16) 100%);
+}
+
+/* Kun en meget let vignette */
+.hero-view::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.18));
+}
+
+/* =========================================
+   HERO CONTENT
+========================================= */
+
+.hero-content {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  max-width: 560px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: -28px;
+
+  text-align: center;
+
+  animation: heroEnter 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   HERO LOGO
+========================================= */
+
+.logo {
+  display: block;
+
+  width: min(49vw, 260px);
+
+  max-height: 260px;
+
+  object-fit: contain;
+
+  margin-bottom: 20px;
+
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.18));
+}
+
+/* =========================================
+   HERO TEXT
+========================================= */
+
+.hero-text {
+  width: 100%;
+
+  color: white;
+
+  text-align: center;
+}
+
+.hero-heading {
+  width: 100%;
+
+  max-width: 520px;
+
+  margin: 0 auto;
+}
+
+/* Lille tekst over headline */
+
+.hero-kicker {
+  margin-bottom: 13px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 0.67rem;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 0.28em;
+
+  text-transform: uppercase;
+}
+
+/* =========================================
+   HERO MAIN TITLE
+========================================= */
+
+.hero-heading h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0;
+
+  color: white;
+
+  font-family: "League Spartan", sans-serif;
+
+  letter-spacing: -0.045em;
+}
+
+/* PRØVETRÆNING */
+
+.hero-heading h1 > span {
+  font-size: clamp(2.75rem, 12vw, 4.8rem);
+
+  font-weight: 700;
+
+  line-height: 0.92;
+}
+
+/* PÅ KBH YNGLINGE */
+
+.hero-heading h1 > small {
+  display: block;
+
+  margin-top: 9px;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  font-family: "League Spartan", sans-serif;
+
+  font-size: clamp(1.5rem, 6.5vw, 2.45rem);
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: -0.03em;
+}
+
+/* =========================================
+   FALLBACK FOR OLD HERO HTML
+
+   Så siden stadig ser pæn ud,
+   hvis du ikke har ændret HTML endnu.
+========================================= */
+
+.hero-text > .eyebrow {
+  margin-bottom: 13px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 0.67rem;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 0.28em;
+
+  text-transform: uppercase;
+}
+
+.hero-text > h1 {
+  max-width: 520px;
+
+  margin: 0 auto;
+
+  color: white;
+
+  font-family: "League Spartan", sans-serif;
+
+  font-size: clamp(2.45rem, 10.5vw, 4.6rem);
+
+  font-weight: 700;
+
+  line-height: 0.98;
+
+  letter-spacing: -0.045em;
+}
+
+/* =========================================
+   INTRO LOADER
+========================================= */
+
+.intro-loader {
+  position: absolute;
+
+  left: 50%;
+
+  bottom: max(27px, env(safe-area-inset-bottom));
+
+  z-index: 3;
+
+  width: 76px;
+  height: 3px;
+
+  transform: translateX(-50%);
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.intro-loader span {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  background: white;
+
+  border-radius: inherit;
+
+  transform-origin: left center;
+
+  animation: loadingBar 3s linear forwards;
+}
+
+@keyframes loadingBar {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* =========================================
+   FORM SIDE
+========================================= */
+
+.form-view {
+  background: radial-gradient(circle at top right, rgba(116, 22, 29, 0.07), transparent 35%), var(--background);
+}
+
+.form-page {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: max(32px, env(safe-area-inset-top)) 18px max(42px, env(safe-area-inset-bottom));
+}
+
+.form-wrapper {
+  width: 100%;
+
+  max-width: 560px;
+
+  margin: auto;
+
+  padding: 30px 22px;
+
+  background: var(--card);
+
+  border: 1px solid rgba(0, 0, 0, 0.04);
+
+  border-radius: 24px;
+
+  box-shadow: var(--shadow);
+
+  animation: formEnter 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes formEnter {
+  from {
+    opacity: 0;
+
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   FORM HEADER
+========================================= */
+
+.form-header {
+  margin-bottom: 35px;
+}
+
+.form-logo {
+  width: 92px;
+
+  max-height: 82px;
+
+  object-fit: contain;
+
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  font-family: "Inter", sans-serif;
+
+  font-size: 0.7rem;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  letter-spacing: 0.22em;
+
+  text-transform: uppercase;
+}
+
+.eyebrow.dark {
+  margin-bottom: 10px;
+
+  color: var(--red);
+
+  opacity: 1;
+}
+
+.form-header h1 {
+  margin-bottom: 14px;
+
+  font-family: "League Spartan", sans-serif;
+
+  font-size: clamp(2.4rem, 10vw, 3.5rem);
+
+  font-weight: 700;
+
+  line-height: 0.95;
+
+  letter-spacing: -0.045em;
+}
+
+.form-intro {
+  max-width: 430px;
+
+  color: var(--text-muted);
+
+  font-size: 0.98rem;
+
+  line-height: 1.55;
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 21px;
+}
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+label {
+  font-size: 0.85rem;
+
+  font-weight: 650;
+
+  letter-spacing: -0.01em;
+}
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.input-wrapper {
+  position: relative;
+}
+
+input {
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  width: 100%;
+
+  min-height: 56px;
+
+  padding: 0 16px;
+
+  border: 1.5px solid var(--border);
+
+  border-radius: 14px;
+
+  background: #faf9f8;
+
+  color: var(--black);
+
+  font: inherit;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+input::placeholder {
+  color: #aaa3a2;
+}
+
+input:hover {
+  border-color: #c6bfbd;
+}
+
+input:focus {
+  border-color: var(--border-focus);
+
+  background: white;
+
+  box-shadow: 0 0 0 4px rgba(116, 22, 29, 0.09);
+}
+
+/* =========================================
+   DATE
+========================================= */
+
+input[type="date"] {
+  min-height: 56px;
+}
+
+/* =========================================
+   PHONE
+========================================= */
+
+.phone-wrapper {
+  display: flex;
+
+  min-height: 56px;
+
+  border: 1.5px solid var(--border);
+
+  border-radius: 14px;
+
+  background: #faf9f8;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.phone-wrapper:focus-within {
+  border-color: var(--border-focus);
+
+  background: white;
+
+  box-shadow: 0 0 0 4px rgba(116, 22, 29, 0.09);
+}
+
+.country-code {
+  display: flex;
+
+  align-items: center;
+
+  padding-left: 16px;
+
+  padding-right: 14px;
+
+  color: var(--text-muted);
+
+  font-size: 0.92rem;
+
+  border-right: 1px solid var(--border);
+}
+
+.phone-wrapper input {
+  border: 0;
+
+  background: transparent;
+
+  border-radius: 0 14px 14px 0;
+
+  box-shadow: none;
+}
+
+.phone-wrapper input:focus {
+  box-shadow: none;
+}
+
+/* =========================================
+   ERRORS
+========================================= */
+
+.error-message {
+  display: none;
+
+  margin-top: 1px;
+
+  color: #a51d28;
+
+  font-size: 0.78rem;
+}
+
+.form-group.error .error-message {
+  display: block;
+}
+
+.form-group.error input {
+  border-color: #a51d28;
+
+  background: #fffafa;
+}
+
+.form-group.error .phone-wrapper {
+  border-color: #a51d28;
+
+  background: #fffafa;
+}
+
+/* =========================================
+   SUBMIT ERROR
+========================================= */
+
+.form-submit-error {
+  display: none;
+
+  padding: 13px 15px;
+
+  border: 1px solid rgba(165, 29, 40, 0.15);
+
+  border-radius: 12px;
+
+  background: rgba(165, 29, 40, 0.08);
+
+  color: #a51d28;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  line-height: 1.45;
+}
+
+.form-submit-error.visible {
+  display: block;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.submit-button {
+  width: 100%;
+  min-height: 58px;
+  margin-top: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(rgba(20, 92, 18, 0.72), rgba(20, 92, 18, 0.72)), url("assets/background.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 12px 28px rgba(20, 92, 18, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 16px 32px rgba(88, 8, 15, 0.26);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.72;
+
+  transform: none;
+
+  box-shadow: 0 8px 20px rgba(88, 8, 15, 0.14);
+}
+
+.submit-button:disabled:hover {
+  transform: none;
+}
+
+.button-arrow {
+  width: 30px;
+
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  font-size: 1.1rem;
+}
+
+/* =========================================
+   PRIVACY
+========================================= */
+
+.privacy-text {
+  margin-top: 22px;
+
+  color: #99908f;
+
+  text-align: center;
+
+  font-size: 0.72rem;
+
+  line-height: 1.5;
+}
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.success-content {
+  gap: 0;
+}
+
+/*
+   Vi skjuler checkmark.
+   Logo + tekst er stærkere visuelt.
+*/
+
+.success-icon {
+  display: none;
+}
+
+.success-logo {
+  margin-bottom: 48px;
+}
+
+/* =========================================
+   SUCCESS HEADING
+========================================= */
+
+.success-heading .hero-kicker {
+  margin-bottom: 14px;
+}
+
+.success-heading h1 > span {
+  font-size: clamp(2.65rem, 11vw, 4.6rem);
+
+  line-height: 0.94;
+}
+
+.success-heading h1 > small {
+  margin-top: 16px;
+
+  max-width: 360px;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: clamp(0.98rem, 4.3vw, 1.15rem);
+
+  font-weight: 500;
+
+  line-height: 1.45;
+
+  letter-spacing: -0.01em;
+
+  opacity: 0.85;
+}
+
+/* =========================================
+   FALLBACK OLD SUCCESS HTML
+========================================= */
+
+.success-text {
+  margin-top: 16px;
+
+  color: rgba(255, 255, 255, 0.84);
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 1.05rem;
+
+  font-weight: 500;
+
+  line-height: 1.5;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (min-width: 700px) {
+  .hero-content {
+    max-width: 620px;
+
+    margin-top: -20px;
+  }
+
+  .logo {
+    width: min(34vw, 235px);
+
+    margin-bottom: 52px;
+  }
+
+  .hero-heading {
+    max-width: 600px;
+  }
+
+  .hero-heading h1 > span {
+    font-size: clamp(4rem, 8vw, 5.4rem);
+  }
+
+  .hero-heading h1 > small {
+    font-size: clamp(2rem, 4.5vw, 2.7rem);
+  }
+
+  .form-page {
+    padding: 60px 30px;
+  }
+
+  .form-wrapper {
+    padding: 44px 46px;
+
+    border-radius: 28px;
+  }
+
+  .form-header {
+    margin-bottom: 40px;
+  }
+}
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 1000px) {
+  .hero-content {
+    max-width: 720px;
+
+    margin-top: -10px;
+  }
+
+  .logo {
+    width: 240px;
+
+    max-height: 240px;
+
+    margin-bottom: 54px;
+  }
+
+  .hero-heading {
+    max-width: 700px;
+  }
+
+  .hero-kicker {
+    margin-bottom: 15px;
+
+    font-size: 0.72rem;
+  }
+
+  .hero-heading h1 > span {
+    font-size: 5.2rem;
+  }
+
+  .hero-heading h1 > small {
+    margin-top: 10px;
+
+    font-size: 2.7rem;
+  }
+
+  .hero-text > h1 {
+    max-width: 680px;
+
+    font-size: 4.8rem;
+  }
+
+  .success-heading h1 > span {
+    font-size: 5rem;
+  }
+
+  .success-heading h1 > small {
+    max-width: 430px;
+
+    font-size: 1.15rem;
+  }
+
+  .form-view {
+    align-items: center;
+  }
+
+  .form-page {
+    align-items: center;
+
+    min-height: 100vh;
+
+    min-height: 100dvh;
+  }
+
+  .form-wrapper {
+    max-width: 590px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 370px) {
+  .hero-view {
+    padding-left: 18px;
+
+    padding-right: 18px;
+  }
+
+  .logo {
+    width: min(47vw, 185px);
+
+    margin-bottom: 38px;
+  }
+
+  .hero-heading h1 > span {
+    font-size: 2.45rem;
+  }
+
+  .hero-heading h1 > small {
+    font-size: 1.38rem;
+  }
+
+  .hero-kicker {
+    font-size: 0.61rem;
+
+    letter-spacing: 0.24em;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY / REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    scroll-behavior: auto !important;
+
+    transition-duration: 0.01ms !important;
+  }
+}
+/* =========================================
+   TRIAL INFO
+========================================= */
+
+.trial-info {
+  position: absolute;
+
+  left: 50%;
+  bottom: 74px;
+
+  z-index: 3;
+
+  width: calc(100% - 48px);
+  max-width: 480px;
+
+  transform: translateX(-50%);
+
+  text-align: center;
+
+  color: white;
+}
+
+/* DATOER */
+
+.trial-info-date {
+  margin-bottom: 7px;
+
+  font-family: "League Spartan", sans-serif;
+
+  font-size: 1rem;
+  font-weight: 650;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.01em;
+
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* STED */
+
+.trial-info-location {
+  font-family: "Inter", sans-serif;
+
+  font-size: 0.72rem;
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  letter-spacing: 0.04em;
+
+  color: rgba(255, 255, 255, 0.64);
+}

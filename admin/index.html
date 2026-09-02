@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Admin | KBH Ynglinge</title>
+
+    <link rel="stylesheet" href="/admin/admin.css">
+
+
+</head>
+
+<body>
+
+    <main class="admin-app">
+
+
+        <!-- =========================================
+             LOGIN
+        ========================================== -->
+
+        <section id="loginView" class="login-view">
+
+            <div class="login-background"></div>
+            <div class="login-overlay"></div>
+
+            <div class="login-card">
+
+                <img src="../assets/logo.png" alt="KBH Ynglinge" class="login-logo">
+
+                <div class="login-header">
+
+                    <p class="eyebrow">
+                        ADMINISTRATION
+                    </p>
+
+                    <h1>
+                        Log ind
+                    </h1>
+
+                    <p>
+                        Log ind for at administrere tilmeldingerne
+                        til udtagelsen.
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Email
+                        </label>
+
+                        <input type="email" id="loginEmail" autocomplete="email" placeholder="din@email.dk" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Adgangskode
+                        </label>
+
+                        <input type="password" id="loginPassword" autocomplete="current-password"
+                            placeholder="Din adgangskode" required>
+
+                    </div>
+
+
+                    <p id="loginError" class="login-error" role="alert"></p>
+
+
+                    <button type="submit" id="loginButton" class="primary-button">
+
+                        <span class="login-button-text">
+                            Log ind
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             DASHBOARD
+        ========================================== -->
+
+        <section id="dashboardView" class="dashboard-view hidden">
+
+            <!-- HEADER -->
+
+            <header class="dashboard-header">
+
+                <div class="header-inner">
+
+                    <div class="brand">
+
+                        <img src="../assets/logo.png" alt="KBH Ynglinge" class="header-logo">
+
+                        <div>
+
+                            <p class="eyebrow red">
+                                ADMIN
+                            </p>
+
+                            <h1>
+                                Udtagelse
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+
+                    <button id="logoutButton" class="logout-button" type="button">
+                        Log ud
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- MAIN -->
+
+            <div class="dashboard-content">
+
+
+                <!-- WELCOME -->
+
+                <section class="dashboard-intro">
+
+                    <div>
+
+                        <p class="eyebrow red">
+                            Ny Hold
+                        </p>
+
+                        <h2>
+                            Tilmeldinger
+                        </h2>
+
+                        <p>
+                            Se og administrér tilmeldinger
+                            til udtagelsen.
+                        </p>
+
+                    </div>
+
+
+                    <button id="csvButton" class="csv-button" type="button">
+
+                        <span>
+                            ↓
+                        </span>
+
+                        Download CSV
+
+                    </button>
+
+                </section>
+
+
+
+                <!-- =========================================
+                     STATS
+                ========================================== -->
+
+                <section class="stats-grid">
+
+                    <article class="stat-card">
+
+                        <span class="stat-label">
+                            Tilmeldte
+                        </span>
+
+                        <strong id="totalCount" class="stat-number">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <span class="stat-label">
+                            Deltog
+                        </span>
+
+                        <strong id="participatedCount" class="stat-number">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <span class="stat-label">
+                            Udeblev
+                        </span>
+
+                        <strong id="noShowCount" class="stat-number">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <span class="stat-label">
+                            Sendt videre
+                        </span>
+
+                        <strong id="forwardedCount" class="stat-number">
+                            0
+                        </strong>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =========================================
+                     FILTERS
+                ========================================== -->
+
+                <section class="toolbar">
+
+                    <div class="search-wrapper">
+
+                        <span class="search-icon">
+                            ⌕
+                        </span>
+
+                        <input id="searchInput" type="search" placeholder="Søg navn, email eller telefon..."
+                            autocomplete="off">
+
+                    </div>
+
+
+                    <select id="statusFilter" aria-label="Filtrer efter prøvetræningsstatus">
+
+                        <option value="all">
+                            Alle
+                        </option>
+
+                        <option value="registered">
+                            Tilmeldt
+                        </option>
+
+                        <option value="participated">
+                            Deltog
+                        </option>
+
+                        <option value="cancelled">
+                            Afbud
+                        </option>
+
+                        <option value="no_show">
+                            Udeblev
+                        </option>
+
+                        <option value="forwarded">
+                            Sendt videre
+                        </option>
+
+                    </select>
+
+                </section>
+
+
+
+                <!-- =========================================
+                     LIST
+                ========================================== -->
+
+                <section class="signups-section">
+
+                    <div class="list-header">
+
+                        <div>
+
+                            <h3>
+                                Tilmeldte
+                            </h3>
+
+                            <p id="resultCount">
+                                0 personer
+                            </p>
+
+                        </div>
+
+                        <button id="refreshButton" class="refresh-button" type="button">
+                            ↻ Opdater
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- DESKTOP HEADER -->
+
+                    <div class="signup-table-header">
+
+                        <div>
+                            Person
+                        </div>
+
+                        <div>
+                            Kontakt
+                        </div>
+
+                        <div>
+                            Fødselsdag
+                        </div>
+
+                        <div>
+                            Tilmeldt
+                        </div>
+
+                        <div>
+                            Prøvetræning
+                        </div>
+
+                    </div>
+
+
+                    <div id="signupsList"></div>
+
+
+                    <!-- LOADING -->
+
+                    <div id="loadingState" class="state-message">
+
+                        <div class="spinner"></div>
+
+                        <p>
+                            Henter tilmeldinger...
+                        </p>
+
+                    </div>
+
+
+                    <!-- EMPTY -->
+
+                    <div id="emptyState" class="state-message hidden">
+
+                        <span class="empty-icon">
+                            ♡
+                        </span>
+
+                        <h4>
+                            Ingen tilmeldinger
+                        </h4>
+
+                        <p>
+                            Der er ingen tilmeldinger,
+                            der matcher dit filter.
+                        </p>
+
+                    </div>
+
+
+                    <!-- ERROR -->
+
+                    <div id="dataError" class="data-error hidden">
+                        Kunne ikke hente tilmeldinger.
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>
