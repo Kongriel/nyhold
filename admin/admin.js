@@ -3,6 +3,7 @@
 // ==========================================
 
 const SUPABASE_URL = "https://lmkjvltqiqelkdvjnpyw.supabase.co";
+
 const SUPABASE_KEY = "sb_publishable_gmPWFVBaSbYF2cDVdXLgKA_rXj2XiBL";
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -266,7 +267,7 @@ function applyFilters() {
   const filtered = signups.filter((signup) => {
     const matchesStatus = status === "all" || signup.status === status;
 
-    const searchableText = [signup.name, signup.email, signup.phone].join(" ").toLowerCase();
+    const searchableText = [signup.name, signup.email, signup.phone, preselectionLabel(signup.preselection_sep9), gymnastTypeLabel(signup.gymnast_type), formatExperience(signup)].filter(Boolean).join(" ").toLowerCase();
 
     const matchesSearch = searchableText.includes(search);
 
@@ -314,6 +315,12 @@ function renderSignups(data) {
 
     const age = calculateAge(signup.birthday);
 
+    const preselection = preselectionLabel(signup.preselection_sep9);
+
+    const gymnastType = gymnastTypeLabel(signup.gymnast_type);
+
+    const experience = formatExperience(signup);
+
     row.innerHTML = `
 
         <!-- =====================================
@@ -353,7 +360,12 @@ function renderSignups(data) {
              DESKTOP: PERSON
         ====================================== -->
 
-        <div class="person-main desktop-person">
+        <div
+          class="
+            person-main
+            desktop-person
+          "
+        >
 
           <div>
 
@@ -377,13 +389,20 @@ function renderSignups(data) {
         <div class="signup-details">
 
 
+          <!-- KONTAKT -->
+
           <div class="mobile-detail">
 
             <span class="detail-label">
               Kontakt
             </span>
 
-            <div class="detail-value contact-links">
+            <div
+              class="
+                detail-value
+                contact-links
+              "
+            >
 
               <a
                 href="mailto:${escapeHtml(signup.email)}"
@@ -402,6 +421,8 @@ function renderSignups(data) {
           </div>
 
 
+          <!-- FØDSELSDAG -->
+
           <div class="mobile-detail">
 
             <span class="detail-label">
@@ -417,31 +438,89 @@ function renderSignups(data) {
           </div>
 
 
+          <!-- GYMNASTIK -->
+
           <div class="mobile-detail">
 
             <span class="detail-label">
-              Tilmeldt
+              Gymnastik
             </span>
 
-            <div class="detail-value">
+            <div
+              class="
+                detail-value
+                gymnastics-details
+              "
+            >
 
-              ${formatDateTime(signup.created_at)}
+              <div class="gymnastics-detail-line">
+
+                <strong>
+                  Førudtagelse:
+                </strong>
+
+                <span>
+                  ${escapeHtml(preselection)}
+                </span>
+
+              </div>
+
+
+              <div class="gymnastics-detail-line">
+
+                <strong>
+                  Type:
+                </strong>
+
+                <span>
+                  ${escapeHtml(gymnastType)}
+                </span>
+
+              </div>
+
+
+              <div class="gymnastics-detail-line">
+
+                <strong>
+                  Seneste 5 år:
+                </strong>
+
+                <span>
+                  ${escapeHtml(experience)}
+                </span>
+
+              </div>
+
+
+              <div class="gymnastics-detail-line">
+
+                <strong>
+                  Tilmeldt:
+                </strong>
+
+                <span>
+                  ${formatDateTime(signup.created_at)}
+                </span>
+
+              </div>
 
             </div>
 
           </div>
 
 
+          <!-- STATUS -->
+
           <div class="mobile-detail">
 
             <span class="detail-label">
-              Prøvetræning
+              Status
             </span>
 
             <select
               class="status-select"
               data-id="${signup.id}"
-              aria-label="Prøvetræningsstatus for ${escapeHtml(signup.name)}"
+              aria-label="Status for ${escapeHtml(signup.name)}"
             >
 
               ${createStatusOptions(signup.status)}
@@ -479,6 +558,69 @@ function addAccordionListeners() {
     });
   });
 }
+
+// ==========================================
+// FØRUDTAGELSE LABEL
+// ==========================================
+
+function preselectionLabel(value) {
+  if (value === true) {
+    return "Ja";
+  }
+
+  if (value === false) {
+    return "Nej";
+  }
+
+  return "—";
+}
+
+// ==========================================
+// GYMNASTTYPE LABEL
+// ==========================================
+
+function gymnastTypeLabel(type) {
+  const labels = {
+    full_year: "Helårsgymnast",
+
+    autumn_tourist: "Efterårsturist",
+
+    spring_tourist: "Forårsturist",
+  };
+
+  return labels[type] || type || "—";
+}
+
+// ==========================================
+// GYMNASTIKERFARING
+// ==========================================
+
+function formatExperience(signup) {
+  let experience = signup.gymnastics_last_5_years;
+
+  if (!Array.isArray(experience)) {
+    experience = [];
+  }
+
+  const formatted = experience.map((item) => {
+    if (item === "Andet" && signup.gymnastics_other) {
+      return `Andet: ${signup.gymnastics_other}`;
+    }
+
+    return item;
+  });
+
+  // Sikkerhed:
+  // hvis "andet"-teksten findes,
+  // men "Andet" ikke ligger i arrayet
+
+  if (signup.gymnastics_other && !experience.includes("Andet")) {
+    formatted.push(`Andet: ${signup.gymnastics_other}`);
+  }
+
+  return formatted.join(", ") || "—";
+}
+
 // ==========================================
 // STATUS OPTIONS
 // ==========================================
@@ -487,26 +629,31 @@ function createStatusOptions(currentStatus) {
   const statuses = [
     {
       value: "registered",
+
       label: "Tilmeldt",
     },
 
     {
       value: "participated",
+
       label: "Deltog",
     },
 
     {
       value: "cancelled",
+
       label: "Afbud",
     },
 
     {
       value: "no_show",
+
       label: "Udeblev",
     },
 
     {
       value: "forwarded",
+
       label: "Sendt videre",
     },
   ];
@@ -576,7 +723,7 @@ async function updateStatus(id, newStatus, selectElement) {
 
     selectElement.value = oldStatus;
 
-    alert("Kunne ikke ændre prøvetræningsstatus.");
+    alert("Kunne ikke ændre status.");
   } finally {
     selectElement.disabled = false;
   }
@@ -601,15 +748,17 @@ function downloadCSV() {
     return;
   }
 
-  const headers = ["Navn", "Fødselsdag", "Alder", "Email", "Telefon", "Prøvetræning", "Admin note", "Tilmeldt", "Senest opdateret"];
+  const headers = ["Navn", "Fødselsdag", "Alder", "Email", "Telefon", "Førudtagelse 9. september", "Gymnasttype", "Gymnastik seneste 5 år", "Andet gymnastik", "Status", "Admin note", "Tilmeldt", "Senest opdateret"];
 
-  const rows = signups.map((signup) => [signup.name, signup.birthday, calculateAge(signup.birthday), signup.email, signup.phone, statusLabel(signup.status), signup.admin_note || "", formatDateTime(signup.created_at), formatDateTime(signup.updated_at)]);
+  const rows = signups.map((signup) => [signup.name, signup.birthday, calculateAge(signup.birthday), signup.email, signup.phone, preselectionLabel(signup.preselection_sep9), gymnastTypeLabel(signup.gymnast_type), Array.isArray(signup.gymnastics_last_5_years) ? signup.gymnastics_last_5_years.join(", ") : "", signup.gymnastics_other || "", statusLabel(signup.status), signup.admin_note || "", formatDateTime(signup.created_at), formatDateTime(signup.updated_at)]);
 
   const csvRows = [headers, ...rows];
 
   const csvContent = csvRows.map((row) => row.map(escapeCSV).join(";")).join("\n");
 
-  // UTF-8 BOM gør æ/ø/å bedre i Excel
+  // UTF-8 BOM:
+  // æ, ø og å i Excel
+
   const blob = new Blob(["\uFEFF", csvContent], {
     type: "text/csv;charset=utf-8;",
   });
@@ -622,7 +771,7 @@ function downloadCSV() {
 
   link.href = url;
 
-  link.download = `kbh-ynglinge-tilmeldinger-${today}.csv`;
+  link.download = `ny-hold-tilmeldinger-${today}.csv`;
 
   document.body.appendChild(link);
 
@@ -668,7 +817,7 @@ function statusLabel(status) {
     forwarded: "Sendt videre",
   };
 
-  return labels[status] || status;
+  return labels[status] || status || "—";
 }
 
 // ==========================================
@@ -677,7 +826,7 @@ function statusLabel(status) {
 
 function formatPhone(phone) {
   if (!phone) {
-    return "";
+    return "—";
   }
 
   const clean = String(phone).replace(/\D/g, "");
@@ -758,5 +907,14 @@ function escapeHtml(value) {
     return "";
   }
 
-  return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  return String(value)
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
 }
