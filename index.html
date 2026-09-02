@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="da">
 
-<!DOCTYPE html>
-<html lang="da">
-
 <head>
     <meta charset="UTF-8">
 
@@ -12,8 +9,8 @@
     <meta name="description" content="Tilmelding til udtagelsen på Ny Hold 26/27">
 
 
-
-    <meta name="theme-color" content="#0B3D0A">
+    !-- Browserfarve: Android, Chrome, Safari m.fl.
+    <meta name="theme-color" content="#145C12">
 
     <!-- Ekstra understøttelse hvis siden gemmes som webapp på iPhone -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -222,6 +219,95 @@
                                 Indtast et gyldigt telefonnummer.
                             </p>
 
+                        </div>
+                        <!-- FØRUDTAGELSE -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Ønsker du at deltage i førudtagelsen d. 9. september?
+                            </label>
+
+                            <div class="choice-grid">
+                                <label class="choice-card">
+                                    <input type="radio" name="preselection_sep9" value="yes" required>
+                                    <span>Ja</span>
+                                </label>
+
+                                <label class="choice-card">
+                                    <input type="radio" name="preselection_sep9" value="no" required>
+                                    <span>Nej</span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <!-- TYPE GYMNAST -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Hvordan stiller du op?
+                            </label>
+
+                            <div class="choice-grid choice-grid-3">
+                                <label class="choice-card">
+                                    <input type="radio" name="gymnast_type" value="full_year" required>
+                                    <span>Helårsgymnast</span>
+                                </label>
+
+                                <label class="choice-card">
+                                    <input type="radio" name="gymnast_type" value="autumn_tourist" required>
+                                    <span>Efterårsturist</span>
+                                </label>
+
+                                <label class="choice-card">
+                                    <input type="radio" name="gymnast_type" value="spring_tourist" required>
+                                    <span>Forårsturist</span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <!-- ERFARING -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Hvilken type gymnastik har du lavet de sidste 5 år?
+                            </label>
+
+                            <p class="form-help">
+                                Du må gerne vælge flere.
+                            </p>
+
+                            <div class="choice-grid choice-grid-2">
+
+                                <label class="choice-card">
+                                    <input type="checkbox" name="gymnastics_experience" value="Rytme">
+                                    <span>Rytme</span>
+                                </label>
+
+                                <label class="choice-card">
+                                    <input type="checkbox" name="gymnastics_experience" value="Spring">
+                                    <span>Spring</span>
+                                </label>
+
+                                <label class="choice-card">
+                                    <input type="checkbox" name="gymnastics_experience" value="Dans">
+                                    <span>Dans</span>
+                                </label>
+
+                                <label class="choice-card">
+                                    <input type="checkbox" name="gymnastics_experience" value="Andet"
+                                        id="experienceOtherCheckbox">
+                                    <span>Andet</span>
+                                </label>
+
+                            </div>
+
+                            <div class="other-experience-field" id="otherExperienceField" hidden>
+                                <label for="gymnasticsOther">
+                                    Hvad har du ellers lavet?
+                                </label>
+
+                                <input type="text" id="gymnasticsOther" name="gymnastics_other"
+                                    placeholder="Fx cheerleading, acro, parkour...">
+                            </div>
                         </div>
 
 
