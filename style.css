@@ -14,7 +14,8 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
 
-  background: linear-gradient(90deg, rgba(13, 69, 12, 0.92) 0%, rgba(31, 113, 13, 0.75) 50%, rgba(126, 198, 28, 0.35) 100%);
+  
+  background-color: #145c12;
 }
 
 body {
@@ -23,7 +24,8 @@ body {
 
   margin: 0;
 
-  background: linear-gradient(90deg, rgba(13, 69, 12, 0.92) 0%, rgba(31, 113, 13, 0.75) 50%, rgba(126, 198, 28, 0.35) 100%);
+  
+  background-color: #145c12;
   color: #171313;
 
   font-family: "Inter", sans-serif;
