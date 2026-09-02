@@ -14,8 +14,7 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
 
-  
-  background-color: #0B3D0A;
+  background-color: #145c12;
 }
 
 body {
@@ -24,8 +23,7 @@ body {
 
   margin: 0;
 
-  
-  background-color: #0B3D0A;
+  background-color: #145c12;
   color: #171313;
 
   font-family: "Inter", sans-serif;
@@ -1118,3 +1116,64 @@ input[type="date"] {
 
   color: rgba(255, 255, 255, 0.64);
 }
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.choice-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.choice-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.choice-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choice-card span {
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 14px;
+
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+
+  background: white;
+
+  font-weight: 600;
+  text-align: center;
+
+  transition: 0.2s ease;
+}
+
+.choice-card input:checked + span {
+  background: #145c12;
+  border-color: #145c12;
+  color: white;
+
+  box-shadow: 0 8px 20px rgba(20, 92, 18, 0.18);
+}
+
+.other-experience-field {
+  margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+  .choice-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
