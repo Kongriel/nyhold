@@ -30,14 +30,14 @@
 
 html {
   font-size: 16px;
-   background-color: #145c12;
+   background-color: #0B3D0A;
 }
 
 body {
   min-height: 100vh;
 
   background: var(--background);
-   background-color: #145c12;
+   background-color: #0B3D0A;
 
   color: var(--text);
 
