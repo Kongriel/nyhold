@@ -267,7 +267,7 @@ function applyFilters() {
   const filtered = signups.filter((signup) => {
     const matchesStatus = status === "all" || signup.status === status;
 
-    const searchableText = [signup.name, signup.email, signup.phone, preselectionLabel(signup.preselection_sep9), gymnastTypeLabel(signup.gymnast_type), formatExperience(signup)].filter(Boolean).join(" ").toLowerCase();
+    const searchableText = [signup.name, signup.email, signup.phone, preselectionLabel(signup.preselection_sep9), gymnastTypeLabel(signup.gymnast_type), formatExperience(signup), signup.gymnastics_other, signup.injuries_travel_note].filter(Boolean).join(" ").toLowerCase();
 
     const matchesSearch = searchableText.includes(search);
 
@@ -321,6 +321,10 @@ function renderSignups(data) {
 
     const experience = formatExperience(signup);
 
+    const experienceNote = signup.gymnastics_other || "—";
+
+    const injuriesTravel = signup.injuries_travel_note || "—";
+
     row.innerHTML = `
 
         <!-- =====================================
@@ -336,11 +340,15 @@ function renderSignups(data) {
           <div class="mobile-person-info">
 
             <div class="person-name">
+
               ${escapeHtml(signup.name)}
+
             </div>
 
             <span class="person-age">
+
               ${age} år
+
             </span>
 
           </div>
@@ -370,11 +378,15 @@ function renderSignups(data) {
           <div>
 
             <div class="person-name">
+
               ${escapeHtml(signup.name)}
+
             </div>
 
             <span class="person-age">
+
               ${age} år
+
             </span>
 
           </div>
@@ -397,6 +409,7 @@ function renderSignups(data) {
               Kontakt
             </span>
 
+
             <div
               class="
                 detail-value
@@ -407,13 +420,18 @@ function renderSignups(data) {
               <a
                 href="mailto:${escapeHtml(signup.email)}"
               >
+
                 ${escapeHtml(signup.email)}
+
               </a>
+
 
               <a
                 href="tel:+45${escapeHtml(signup.phone)}"
               >
+
                 ${formatPhone(signup.phone)}
+
               </a>
 
             </div>
@@ -428,6 +446,7 @@ function renderSignups(data) {
             <span class="detail-label">
               Fødselsdag
             </span>
+
 
             <div class="detail-value">
 
@@ -446,6 +465,7 @@ function renderSignups(data) {
               Gymnastik
             </span>
 
+
             <div
               class="
                 detail-value
@@ -453,53 +473,128 @@ function renderSignups(data) {
               "
             >
 
-              <div class="gymnastics-detail-line">
+
+              <!-- FØRUDTAGELSE -->
+
+              <div
+                class="
+                  gymnastics-detail-line
+                "
+              >
 
                 <strong>
                   Førudtagelse:
                 </strong>
 
                 <span>
+
                   ${escapeHtml(preselection)}
+
                 </span>
 
               </div>
 
 
-              <div class="gymnastics-detail-line">
+              <!-- GYMNASTTYPE -->
+
+              <div
+                class="
+                  gymnastics-detail-line
+                "
+              >
 
                 <strong>
                   Type:
                 </strong>
 
                 <span>
+
                   ${escapeHtml(gymnastType)}
+
                 </span>
 
               </div>
 
 
-              <div class="gymnastics-detail-line">
+              <!-- SENESTE 5 ÅR -->
+
+              <div
+                class="
+                  gymnastics-detail-line
+                "
+              >
 
                 <strong>
                   Seneste 5 år:
                 </strong>
 
                 <span>
+
                   ${escapeHtml(experience)}
+
                 </span>
 
               </div>
 
 
-              <div class="gymnastics-detail-line">
+              <!-- UDDYBNING -->
+
+              <div
+                class="
+                  gymnastics-detail-line
+                "
+              >
+
+                <strong>
+                  Uddybning:
+                </strong>
+
+                <span>
+
+                  ${escapeHtml(experienceNote)}
+
+                </span>
+
+              </div>
+
+
+              <!-- SKADER / REJSER -->
+
+              <div
+                class="
+                  gymnastics-detail-line
+                "
+              >
+
+                <strong>
+                  Skader/rejser:
+                </strong>
+
+                <span>
+
+                  ${escapeHtml(injuriesTravel)}
+
+                </span>
+
+              </div>
+
+
+              <!-- TILMELDT -->
+
+              <div
+                class="
+                  gymnastics-detail-line
+                "
+              >
 
                 <strong>
                   Tilmeldt:
                 </strong>
 
                 <span>
+
                   ${formatDateTime(signup.created_at)}
+
                 </span>
 
               </div>
@@ -516,6 +611,7 @@ function renderSignups(data) {
             <span class="detail-label">
               Status
             </span>
+
 
             <select
               class="status-select"
@@ -596,29 +692,13 @@ function gymnastTypeLabel(type) {
 // ==========================================
 
 function formatExperience(signup) {
-  let experience = signup.gymnastics_last_5_years;
+  const experience = signup.gymnastics_last_5_years;
 
-  if (!Array.isArray(experience)) {
-    experience = [];
+  if (!Array.isArray(experience) || experience.length === 0) {
+    return "—";
   }
 
-  const formatted = experience.map((item) => {
-    if (item === "Andet" && signup.gymnastics_other) {
-      return `Andet: ${signup.gymnastics_other}`;
-    }
-
-    return item;
-  });
-
-  // Sikkerhed:
-  // hvis "andet"-teksten findes,
-  // men "Andet" ikke ligger i arrayet
-
-  if (signup.gymnastics_other && !experience.includes("Andet")) {
-    formatted.push(`Andet: ${signup.gymnastics_other}`);
-  }
-
-  return formatted.join(", ") || "—";
+  return experience.join(", ");
 }
 
 // ==========================================
@@ -666,7 +746,9 @@ function createStatusOptions(currentStatus) {
           value="${status.value}"
           ${status.value === currentStatus ? "selected" : ""}
         >
+
           ${status.label}
+
         </option>
 
       `,
@@ -748,16 +830,16 @@ function downloadCSV() {
     return;
   }
 
-  const headers = ["Navn", "Fødselsdag", "Alder", "Email", "Telefon", "Førudtagelse 9. september", "Gymnasttype", "Gymnastik seneste 5 år", "Andet gymnastik", "Status", "Admin note", "Tilmeldt", "Senest opdateret"];
+  const headers = ["Navn", "Fødselsdag", "Alder", "Email", "Telefon", "Førudtagelse 9. september", "Gymnasttype", "Gymnastik seneste 5 år", "Uddybning af gymnastikerfaring", "Skader / længerevarende rejser", "Status", "Admin note", "Tilmeldt", "Senest opdateret"];
 
-  const rows = signups.map((signup) => [signup.name, signup.birthday, calculateAge(signup.birthday), signup.email, signup.phone, preselectionLabel(signup.preselection_sep9), gymnastTypeLabel(signup.gymnast_type), Array.isArray(signup.gymnastics_last_5_years) ? signup.gymnastics_last_5_years.join(", ") : "", signup.gymnastics_other || "", statusLabel(signup.status), signup.admin_note || "", formatDateTime(signup.created_at), formatDateTime(signup.updated_at)]);
+  const rows = signups.map((signup) => [signup.name, signup.birthday, calculateAge(signup.birthday), signup.email, signup.phone, preselectionLabel(signup.preselection_sep9), gymnastTypeLabel(signup.gymnast_type), Array.isArray(signup.gymnastics_last_5_years) ? signup.gymnastics_last_5_years.join(", ") : "", signup.gymnastics_other || "", signup.injuries_travel_note || "", statusLabel(signup.status), signup.admin_note || "", formatDateTime(signup.created_at), formatDateTime(signup.updated_at)]);
 
   const csvRows = [headers, ...rows];
 
   const csvContent = csvRows.map((row) => row.map(escapeCSV).join(";")).join("\n");
 
   // UTF-8 BOM:
-  // æ, ø og å i Excel
+  // gør æ, ø og å pæne i Excel
 
   const blob = new Blob(["\uFEFF", csvContent], {
     type: "text/csv;charset=utf-8;",
