@@ -220,8 +220,6 @@ body {
 
   object-fit: contain;
 
-  margin-bottom: 20px;
-
   filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.18));
 }
 
@@ -470,8 +468,9 @@ body {
   max-height: 82px;
 
   object-fit: contain;
+  margin-left: -1rem;
 
-  margin-bottom: 30px;
+  margin-bottom: 12px;
 }
 
 .eyebrow {
@@ -1177,3 +1176,123 @@ input[type="date"] {
   }
 }
 
+/* ==========================================
+   TEXTAREA / EKSTRA FELTER
+========================================== */
+
+.form-group textarea {
+  width: 100%;
+  min-height: 120px;
+
+  padding: 14px 16px;
+
+  border: 1px solid rgba(20, 92, 18, 0.16);
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  color: #163316;
+
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+
+  resize: vertical;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Placeholder */
+
+.form-group textarea::placeholder {
+  color: rgba(22, 51, 22, 0.45);
+}
+
+/* Fokus */
+
+.form-group textarea:focus {
+  border-color: #2b7d0f;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(43, 125, 15, 0.1),
+    0 8px 22px rgba(20, 92, 18, 0.08);
+}
+
+/* Error */
+
+.form-group.error textarea {
+  border-color: #c93a3a;
+
+  background: #fffafa;
+
+  box-shadow: 0 0 0 4px rgba(201, 58, 58, 0.08);
+}
+
+/* ==========================================
+   HJÆLPETEKST
+========================================== */
+
+.form-help {
+  margin: 5px 0 10px;
+
+  color: rgba(22, 51, 22, 0.58);
+
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+/* ==========================================
+   ERFARING / SKADER SEKTIONER
+========================================== */
+
+.experience-note,
+.injuries-travel-note {
+  margin-top: 14px;
+}
+
+/* Lille label over textarea */
+
+.experience-note label,
+.injuries-travel-note label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #163316;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* ==========================================
+   LIDT EKSTRA LUFT MELLEM VALG OG TEKSTFELT
+========================================== */
+
+.choice-grid + .form-group,
+.choice-grid + .experience-note {
+  margin-top: 16px;
+}
+
+/* ==========================================
+   MOBIL
+========================================== */
+
+@media (max-width: 600px) {
+  .form-group textarea {
+    min-height: 110px;
+
+    padding: 13px 14px;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+  }
+}
