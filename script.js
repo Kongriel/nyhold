@@ -2,10 +2,8 @@
 // SUPABASE
 // ==========================================
 
-// Find dem i:
-// Supabase → Project Settings / Connect / API
-
 const SUPABASE_URL = "https://lmkjvltqiqelkdvjnpyw.supabase.co";
+
 const SUPABASE_KEY = "sb_publishable_gmPWFVBaSbYF2cDVdXLgKA_rXj2XiBL";
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -16,7 +14,9 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Views
 const introView = document.getElementById("introView");
+
 const formView = document.getElementById("formView");
+
 const successView = document.getElementById("successView");
 
 // Form
@@ -24,8 +24,11 @@ const signupForm = document.getElementById("signupForm");
 
 // Almindelige inputs
 const nameInput = document.getElementById("name");
+
 const birthdayInput = document.getElementById("birthday");
+
 const emailInput = document.getElementById("email");
+
 const phoneInput = document.getElementById("phone");
 
 // Førudtagelse
@@ -37,16 +40,20 @@ const gymnastTypeInputs = document.querySelectorAll('input[name="gymnast_type"]'
 // Gymnastikerfaring
 const experienceInputs = document.querySelectorAll('input[name="gymnastics_experience"]');
 
-// Andet
+// "Andet" checkbox
 const otherExperienceCheckbox = document.getElementById("experienceOtherCheckbox");
 
-const otherExperienceField = document.getElementById("otherExperienceField");
-
+// Permanent uddybning af gymnastikerfaring
 const gymnasticsOtherInput = document.getElementById("gymnasticsOther");
+
+// Skader / længerevarende rejser
+const injuriesTravelInput = document.getElementById("injuriesTravel");
 
 // Submit
 const submitButton = document.getElementById("submitButton");
+
 const submitButtonText = submitButton.querySelector(".button-text");
+
 const submitButtonArrow = submitButton.querySelector(".button-arrow");
 
 // Fejl
@@ -73,6 +80,7 @@ function switchView(currentView, nextView) {
 
   setTimeout(() => {
     currentView.classList.remove("active", "leaving");
+
     nextView.classList.add("active");
 
     window.scrollTo({
@@ -98,28 +106,6 @@ phoneInput.addEventListener("input", () => {
 });
 
 // ==========================================
-// "ANDET" GYMNASTIK
-// ==========================================
-
-if (otherExperienceCheckbox) {
-  otherExperienceCheckbox.addEventListener("change", () => {
-    if (otherExperienceCheckbox.checked) {
-      otherExperienceField.hidden = false;
-
-      setTimeout(() => {
-        gymnasticsOtherInput.focus();
-      }, 100);
-    } else {
-      otherExperienceField.hidden = true;
-
-      gymnasticsOtherInput.value = "";
-
-      gymnasticsOtherInput.closest(".form-group")?.classList.remove("error");
-    }
-  });
-}
-
-// ==========================================
 // FJERN ERRORS NÅR MAN RETTER INPUT
 // ==========================================
 
@@ -137,7 +123,10 @@ inputs.forEach((input) => {
   });
 });
 
-// Førudtagelse
+// ==========================================
+// FØRUDTAGELSE
+// ==========================================
+
 preselectionInputs.forEach((input) => {
   input.addEventListener("change", () => {
     const group = input.closest(".form-group");
@@ -150,7 +139,10 @@ preselectionInputs.forEach((input) => {
   });
 });
 
-// Gymnasttype
+// ==========================================
+// GYMNASTTYPE
+// ==========================================
+
 gymnastTypeInputs.forEach((input) => {
   input.addEventListener("change", () => {
     const group = input.closest(".form-group");
@@ -163,7 +155,10 @@ gymnastTypeInputs.forEach((input) => {
   });
 });
 
-// Erfaring
+// ==========================================
+// GYMNASTIKERFARING
+// ==========================================
+
 experienceInputs.forEach((input) => {
   input.addEventListener("change", () => {
     const group = input.closest(".form-group");
@@ -176,10 +171,29 @@ experienceInputs.forEach((input) => {
   });
 });
 
-// Andet tekstfelt
+// ==========================================
+// UDDYBNING AF GYMNASTIKERFARING
+// ==========================================
+
 if (gymnasticsOtherInput) {
   gymnasticsOtherInput.addEventListener("input", () => {
     const group = gymnasticsOtherInput.closest(".form-group");
+
+    if (group) {
+      group.classList.remove("error");
+    }
+
+    hideSubmitError();
+  });
+}
+
+// ==========================================
+// SKADER / REJSER
+// ==========================================
+
+if (injuriesTravelInput) {
+  injuriesTravelInput.addEventListener("input", () => {
+    const group = injuriesTravelInput.closest(".form-group");
 
     if (group) {
       group.classList.remove("error");
@@ -205,6 +219,10 @@ function validateName() {
   return true;
 }
 
+// ==========================================
+// VALIDATION: FØDSELSDAG
+// ==========================================
+
 function validateBirthday() {
   if (!birthdayInput.value) {
     showError(birthdayInput);
@@ -227,6 +245,10 @@ function validateBirthday() {
   return true;
 }
 
+// ==========================================
+// VALIDATION: EMAIL
+// ==========================================
+
 function validateEmail() {
   const email = emailInput.value.trim();
 
@@ -240,6 +262,10 @@ function validateEmail() {
 
   return true;
 }
+
+// ==========================================
+// VALIDATION: TELEFON
+// ==========================================
 
 function validatePhone() {
   const phone = phoneInput.value.replace(/\D/g, "");
@@ -314,15 +340,23 @@ function validateExperience() {
 }
 
 // ==========================================
-// VALIDATION: ANDET
+// VALIDATION: "ANDET"
+// ==========================================
+//
+// Uddybning er normalt frivillig.
+//
+// MEN hvis personen vælger checkboxen
+// "Andet", skal de skrive hvad det er.
 // ==========================================
 
 function validateOtherExperience() {
   if (otherExperienceCheckbox && otherExperienceCheckbox.checked) {
-    const value = gymnasticsOtherInput.value.trim();
+    const value = gymnasticsOtherInput?.value.trim() || "";
 
     if (value.length < 2) {
-      showError(gymnasticsOtherInput);
+      if (gymnasticsOtherInput) {
+        showError(gymnasticsOtherInput);
+      }
 
       return false;
     }
@@ -336,6 +370,10 @@ function validateOtherExperience() {
 // ==========================================
 
 function showError(input) {
+  if (!input) {
+    return;
+  }
+
   const group = input.closest(".form-group");
 
   if (group) {
@@ -393,11 +431,14 @@ function scrollToFirstError() {
     block: "center",
   });
 
-  const firstInput = firstErrorGroup.querySelector("input");
+  // Kan nu både fokusere input,
+  // textarea og select
 
-  if (firstInput) {
+  const firstField = firstErrorGroup.querySelector("input, textarea, select");
+
+  if (firstField) {
     setTimeout(() => {
-      firstInput.focus({
+      firstField.focus({
         preventScroll: true,
       });
     }, 400);
@@ -461,8 +502,6 @@ signupForm.addEventListener("submit", async (event) => {
 
   const gymnasticsExperience = [...document.querySelectorAll('input[name="gymnastics_experience"]:checked')].map((input) => input.value);
 
-  const gymnasticsOther = otherExperienceCheckbox?.checked ? gymnasticsOtherInput.value.trim() : null;
-
   // ==================================
   // DATA
   // ==================================
@@ -485,8 +524,13 @@ signupForm.addEventListener("submit", async (event) => {
     // Rytme, Spring, Dans, Andet
     gymnastics_last_5_years: gymnasticsExperience,
 
-    // Hvis "Andet" er valgt
-    gymnastics_other: gymnasticsOther,
+    // Permanent tekstfelt:
+    // uddybning af gymnastikerfaring
+    gymnastics_other: gymnasticsOtherInput?.value.trim() || null,
+
+    // Frivilligt felt:
+    // skader eller længerevarende rejser
+    injuries_travel_note: injuriesTravelInput?.value.trim() || null,
   };
 
   // ==================================
@@ -514,14 +558,6 @@ signupForm.addEventListener("submit", async (event) => {
       group.classList.remove("error");
     });
 
-    if (otherExperienceField) {
-      otherExperienceField.hidden = true;
-    }
-
-    if (gymnasticsOtherInput) {
-      gymnasticsOtherInput.value = "";
-    }
-
     hideSubmitError();
 
     // ==================================
@@ -537,4 +573,3 @@ signupForm.addEventListener("submit", async (event) => {
     setLoading(false);
   }
 });
-
